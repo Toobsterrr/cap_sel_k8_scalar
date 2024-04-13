@@ -1,0 +1,5 @@
+kubectl -it exec experiment-controller-normal-0 -- bash 
+kubectl -it exec experiment-controller-aggressive-0 -- bash 
+kubectl exec -it experiment-controller-normal-0 --  "touch /exp/var/logs/console-log.txt; java -jar /exp/lib/scalar-1.0.0.jar /exp/etc/platform.properties /tmp/experiment.properties >> /exp/var/logs/console-log.txt"
+kubectl exec -it experiment-controller-normal-0 --  "java -jar /exp/lib/scalar-1.0.0.jar /exp/etc/platform.properties /tmp/experiment.properties >> /exp/var/logs/console-log.txt"
+
