@@ -4,9 +4,9 @@ for sla in `ls slas`
    namespace=`sed -e 's#.*_\(\)#\1#' <<< ${sla}`
    # echo SLA configuration ${namespace}
    # echo ==============================
-    echo $sla
-    echo $namespace
-    exit
+    # echo $sla
+    # echo $namespace
+    # exit
 
    kubectl create -f slas/${sla}/namespace.yaml     # maak namespace
    kubectl create -f resourcequota/compute-resources.yaml --namespace=${namespace}  # limits per namespace
