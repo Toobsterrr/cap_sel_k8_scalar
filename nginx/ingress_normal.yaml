@@ -3,8 +3,9 @@ kind: Ingress
 metadata:
   name: whoami
   annotations:
-    nginx.ingress.kubernetes.io/limit-rps: "20"
+    nginx.ingress.kubernetes.io/limit-rps: "10"
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "1"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "10.244.205.193/32"
 spec:
   rules:
   - host:

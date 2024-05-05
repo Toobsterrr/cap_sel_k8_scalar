@@ -1,10 +1,20 @@
+
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: whoami
   annotations:
-    nginx.ingress.kubernetes.io/limit-rps: "20"
-    nginx.ingress.kubernetes.io/limit-burst-multiplier: "1"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      geo $limit {
+        default 5;
+        10.244.205.193 10;
+        10.244.151.1 1;
+      }
+      map $limit $limit_key {
+        ~\b(10|5)\b $binary_remote_addr;
+      }
+      limit_req_zone $limit_key zone=req_limit_per_ip:10m rate=$limitr/s;
 spec:
   rules:
   - host:
@@ -18,3 +28,4 @@ spec:
             port:
               number: 80
   ingressClassName: nginx
+

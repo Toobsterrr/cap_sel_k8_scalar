@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passthrough
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: passthrough
+  template:
+    metadata:
+      labels:
+        app: passthrough
+    spec:
+      containers:
+      - name: passthrough
+        image: tomasvdn/passthrough:v0.11
+        ports:
+        - containerPort: 8080

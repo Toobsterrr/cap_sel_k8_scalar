@@ -3,7 +3,7 @@
 ## Start and setup minikube
 (helm and minikube/kubectl assumed to be installed using package manager. If not, follow this ![md](https://github.com/Danacus/k8-scalar/blob/master/docs/tutorial.md))
 
-1. Set repo: ```export k8_scalar_dir=`pwd`/k8-scalar```
+1. Set repo: ```export k8_scalar_dir=`pwd`/cap_sel_k8_scalar```
 2. Start minikube: ``` minikube start --no-vtx-check --driver=kvm2 --cpus 4 --memory 8192 --network-plugin=cni --cni=calico```
 3. Deploy Heapster monitoring service: 
 	- ```role=`kubectl get clusterrole | grep heapster | head -n1 | awk '{print $1;}'` ```
@@ -71,4 +71,5 @@ kubectl create secret generic kubeconfig --from-file .
 3. ```kubectl exec -it experiment-controller-normal-0 --  "touch /exp/var/logs/console-log.txt; java -jar /exp/lib/scalar-1.0.0.jar /exp/etc/platform.properties /tmp/experiment.properties >> /exp/var/logs/console-log.txt"```
 4. ```kubectl exec -it experiment-controller-normal-0 --  "java -jar /exp/lib/scalar-1.0.0.jar /exp/etc/platform.properties /tmp/experiment.properties >> /exp/var/logs/console-log.txt"```
 
-## Results are found in: 
+Results are found in the respective homefolder
+
