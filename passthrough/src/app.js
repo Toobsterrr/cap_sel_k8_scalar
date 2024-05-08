@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const http = require('http');
 
 const app = express();
 
@@ -222,25 +223,20 @@ setInterval(update, 1000);
 
 // ################################## API ##################################
 
-app.get('/request', (req, res) => {
+app.get('/request/0', (req, res) => {
     addRps(req.ip);
 
-    if (!checkIP(req.ip)) {
-        const requestOptions = {
-            method: req.method,
-            body: req.body,
-            headers: req.headers
-        };
-
-        fetch(urlSaaSApp, requestOptions)
-            .then(response => response.text())
-            .then(data => {
-                res.send(data);
-            })
-            .catch(error => {
-                console.error(error);
-                res.status(500).send('Internal Server Error');
-            });
+    if (checkIP(req.ip)) {
+        // Make a request to the SaaS app using the following url:
+        // http://<urlSaaSApp>/request/0
+        http.get(`http://${urlSaaSApp}/request/0`, (response) => {
+            if (response.statusCode === 200) {
+                res.send('Request 0 successful');
+            }
+            else {
+                res.status(500).send('Request 0 failed');
+            }
+        });
     }
     else {
         res.status(500).send('Rate Limit Exceeded');
@@ -308,6 +304,22 @@ app.get('/limit/set/:ip/:limitCpu/:guaranteedCpu/:limitMem/:guaranteedMem', (req
     `);
 });
 
+// set the total resources
+app.get('/resources/set/:cpu/:memory', (req, res) => {
+    const cpu = req.params.cpu;
+    const memory = req.params.memory;
+
+    if (isNaN(cpu) || isNaN(memory)) {
+        res.status(400).send('Invalid input');
+        return;
+    }
+
+    totalResources.cpu = cpu;
+    totalResources.memory = memory;
+
+    res.send(`Total resources set to: ${cpu} CPU and ${memory} Memory`);
+});
+
 app.get('/set_saas_url/:url', (req, res) => {
     urlSaaSApp = req.params.url;
     res.send(`URL set to: ${urlSaaSApp}`);
@@ -319,7 +331,7 @@ app.listen(port, () => {
 });
 
 // ################################## LOG ##################################
-
+/*
 const filename = `log.csv`;
 const content = `method, request, ip\n`;
 
@@ -335,7 +347,7 @@ app.use((req, res, next) => {
     const filename = `log.csv`;
     const content = `${req.method}, ${req.url}, ${req.ip}\n`;
 
-    fs.writeFile(filename, content, (err) => {
+    fs.appendFile(filename, content, (err) => {
         if (err) {
             console.error(err);
         }
@@ -343,3 +355,4 @@ app.use((req, res, next) => {
 
     next();
 });
+*/

@@ -16,5 +16,8 @@ COPY . .
 # Expose the port your application listens on
 EXPOSE 8080
 
+# Install wget
+RUN apt-get update && apt-get install -y wget
+
 # Command to run the application
 CMD ["node", "app.js"]
