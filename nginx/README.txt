@@ -1,6 +1,9 @@
-requirements: minikube addons enable ingress
+requirements: 
+    minikube addons enable ingress
 
 om ingress regels te plaatsen:
-kubectl apply -f ingress.yaml -n [namespace van de saas-app]
+    kubectl apply -f ingress.yaml -n [namespace van de saas-app]
+    kubectl apply -f ingress_no_rl.yaml -n [namespace van de saas-app]
 
-in de experiment.conf file als targeturl: [naam nginx service].[naam nginx namespace]
+in de experiment.conf file als targeturl: 
+    [naam nginx service].[naam nginx namespace]
